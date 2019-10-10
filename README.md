@@ -3,7 +3,7 @@ The first leveraged ETF was introduced in 2006, and since then, several leverage
 
 The solution: use the underlying ETF (e.g. QQQ) to simulate the leveraged ETFs from the days before they existed.  QQQ was [created in](https://www.invesco.com/portal/site/us/investors/etfs/product-detail?productId=qqq) 1999, so we should be able to simulate an extra 10 years of TQQQ and SQQQ data from that.  For SPY, UPRO (3x), and SPXU (-3x), we can simulate data all the way back to 1993 from the inception of UPRO and SPXU (2009).
 
-At a high level, the code here simulates leveraged ETFs by first finding the correlation between the normal ETF and leveraged ETF daily close-close and open-open, high-high, and low-low percent changes.  For QQQ and TQQQ/SQQQ, the correlation is extremely high (~99%), which makes simulating the daily close-close percent change easy.  We just get the multiplier (around 3 for TQQQ/QQQ) and multiply the underlying ETF's daily percent change by the multiplier.  Then the daily prices are back-calculated from the latest leveraged ETF datapoint.  Currently, it uses machine learning to get the open, high, and low prices from ratios of open/close, etc.  I had mistakenly thought the open-open, h-h, and l-l percent changes between the underlying ETF and the leveraged ones were not correlated, but it looks like they are.
+At a high level, the code here simulates leveraged ETFs by first finding the correlation between the normal ETF and leveraged ETF daily close-close and open-open, high-high, and low-low percent changes.  For QQQ and TQQQ/SQQQ, the correlation is extremely high (~99%), which makes simulating the daily close-close percent change easy.  We just get the multiplier (around 3 for TQQQ/QQQ) and multiply the underlying ETF's daily percent change by the multiplier.  Then the daily prices are back-calculated from the latest leveraged ETF datapoint.  Currently, it uses machine learning to get the open, high, and low prices from ratios of open/close, etc.  I had mistakenly thought the open-open, h-h, and l-l percent changes between the underlying ETF and the leveraged ones were not correlated, but it looks like they are.  However, the QQQ-SQQQ (3x inverse leverage) relationship for open and high percent changes dont' seem to hold well.
 
 ![QQQ-TQQQ correlation](images/qqq-tqqq_c_c_correlation.jpg)
 
@@ -87,3 +87,6 @@ print(d)
 
 ## Backtest example
 - Todo
+
+Other todo:
+- compare percent differences between actual and predicted values using ML vs simply multiplying by ratio from ETF/lev_ETF
